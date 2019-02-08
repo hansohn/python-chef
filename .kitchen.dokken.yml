@@ -1,31 +1,36 @@
 ---
 driver:
-  name: vagrant
+  name: dokken
+  chef_version: latest
+  privileged: true
+
+transport:
+  name: dokken
 
 provisioner:
-  name: chef_zero
+  name: dokken
   product_name: chef
   product_version: latest
   channel: stable
   install_strategy: once
   always_update_cookbooks: true
-  #log_level: info
+  log_level: info
 
 verifier:
   name: inspec
 
 platforms:
-  - name: centos-7.6
+  - name: centos-7
+    driver:
+      platform: rhel
+      pid_one_command: /usr/lib/systemd/systemd
+      intermediate_instructions:
+        - RUN yum -y install lsof which systemd-sysv initscripts wget net-tools sudo bzip2
 
 suites:
   - name: default
     driver:
-      vm_hostname: python
-      customize:
-        memory: 1024
-        cpuexecutioncap: 25
-        natdnshostresolver1: "on"
-      network:
+      hostname: python
     run_list:
       - recipe[yum-ius]
       - recipe[python-chef::python2]
@@ -35,4 +40,3 @@ suites:
       inspec_tests:
         - test/integration/default
     attributes:
-      dev_mode: true
