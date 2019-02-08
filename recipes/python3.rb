@@ -42,7 +42,7 @@ bash 'python3_upgrade_tools' do
 end
 
 # python3 create symlink(s)
-node['python']['python3']['symlinks'].each do |target,link|
+node['python']['python3']['symlinks'].each do |target, link|
   link "python3_symlink_#{target}_to_#{link}" do
     target_file target
     to link
@@ -50,6 +50,6 @@ node['python']['python3']['symlinks'].each do |target,link|
 end unless node['python']['python3']['symlinks'].empty?
 
 # install pips
-bash "pyhton3_install_pips" do
+bash 'pyhton3_install_pips' do
   code "#{node['python']['python3']['bin']} -m pip install #{node['python']['python3']['pips'].join(' ')}"
 end unless node['python']['python3']['pips'].empty?

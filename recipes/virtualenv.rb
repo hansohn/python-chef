@@ -29,7 +29,7 @@ bash 'python_pip_install_virtualenv' do
 end unless node['python']['virtualenvs'].empty?
 
 # create virtualenv(s)
-node['python']['virtualenvs'].each do |name,params|
+node['python']['virtualenvs'].each do |name, params|
   directory "virtualenv_#{name}_#{params['dest_dir']}" do
     path params['dest_dir']
     recursive true
