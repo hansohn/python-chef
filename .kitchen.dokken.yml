@@ -40,3 +40,13 @@ suites:
       inspec_tests:
         - test/integration/default
     attributes:
+      python:
+        virtualenvs:
+          python2:
+            python: '/bin/python2'
+            dest_dir: '/opt/virtualenv/python2'
+            pips: []
+          python3:
+            python: '/bin/python3.6'
+            dest_dir: '/opt/virtualenv/python3'
+            pips: []
