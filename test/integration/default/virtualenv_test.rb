@@ -5,14 +5,19 @@
 # The Inspec reference, with examples and extensive documentation, can be
 # found at http://inspec.io/docs/reference/resources/
 
-unless os.windows?
-  # This is an example test, replace with your own test.
-  describe user('root'), :skip do
-    it { should exist }
-  end
-end
+control 'python-chef::virtualenv' do
+  title 'Testing virtualenv installation'
 
-# This is an example test, replace it with your own test.
-describe port(80), :skip do
-  it { should_not be_listening }
+  describe bash('python -m pip list') do
+    its('stdout') { should match /virtualenv/ }
+    its('exit_status') { should eq 0 }
+  end
+
+  describe file('/opt/virtualenv/python2') do
+    it { should be_directory }
+  end
+
+  describe file('/opt/virtualenv/python3') do
+    it { should be_directory }
+  end
 end
