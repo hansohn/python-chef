@@ -1,6 +1,5 @@
-#
-# Cookbook Name:: python-chef
-# Recipe:: default
+# Cookbook Name:: jupyterhub-chef
+# Recipe:: virtualenv
 #
 # The MIT License (MIT)
 #
@@ -24,26 +23,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-# these aren't the droids you're looking for
+# install virtualenv
+bash 'python_pip_install_virtualenv' do
+  code 'python -m pip install --upgrade virtualenv'
+end unless node['python']['virtualenvs'].empty?
 
-#                     _____
-#                _.-''     ``-._
-#              ,'               `.
-#             /                   \
-#            /                     \
-#           :                       :
-#           |_______________________|
-#           ;_______________________:
-#          / |       ,'   `.       | \
-#          : `.___.-'  ___  `-.___.' :
-#          \/`._   _,-'   `-._   _,'\/
-#          ,\.-'      _.-._      `-./.
-#        ,'        _,' ___ `._        `.
-#        | :.    ,'_,-' . `-._`-.   .: |
-#        | ':.  '-'     |     `-'  .:' |
-#        :  ':.         |         .:'  ;
-#         \  ,-         |         -.  /
-#          \'    \      '      /    `/
-#           \    ,`   ,'^`.   '.    /
-#            \  ( O`-','-'.`-'O )  /
-#             `-.___,'     `.___.-'
+# create virtualenv(s)
+node['python']['virtualenvs'].each do |name,params|
+  directory "virtualenv_#{name}_#{params['dest_dir']}" do
+    path params['dest_dir']
+    recursive true
+    action :create
+  end
+
+  bash "virtualenv_create_#{name}" do
+    code <<-EOH
+        if [ ! -d #{params['dest_dir']}/#{name}/bin ]; then
+          virtualenv -p #{params['python']} #{params['dest_dir']}/#{name}
+        fi
+        source #{params['dest_dir']}/#{name}/bin/activate
+        python -m pip install #{params['pips'].join(' ')}
+        deactivate
+      EOH
+    only_if { File.exist?(params['python']) }
+  end
+end

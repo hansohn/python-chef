@@ -1,11 +1,14 @@
-# python-chef CHANGELOG
+# Change Log
 
-This file is used to list changes made in each version of the python-chef cookbook.
+All notable changes to this project will be documented in this file.
+This project adheres to [Semantic Versioning](http://semver.org/).
 
-# 0.1.0
+## [Unreleased](unreleased)
 
-Initial release.
+- no new features in development at this time
 
-- change 0
-- change 1
+## [0.1.0](https://github.com/hansohn/python-chef/compare/0.1.0...0.1.0) (Feb 08, 2019)
 
+FEATURES:
+
+- initial commit

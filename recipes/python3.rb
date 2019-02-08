@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: python-chef
-# Recipe:: default
+# Cookbook Name:: jupyterhub-chef
+# Recipe:: python3
 #
 # The MIT License (MIT)
 #
@@ -24,26 +24,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-# these aren't the droids you're looking for
+# python3 install packages(s)
+package 'python3_install_packages' do
+  package_name node['python']['python3']['packages']
+end
 
-#                     _____
-#                _.-''     ``-._
-#              ,'               `.
-#             /                   \
-#            /                     \
-#           :                       :
-#           |_______________________|
-#           ;_______________________:
-#          / |       ,'   `.       | \
-#          : `.___.-'  ___  `-.___.' :
-#          \/`._   _,-'   `-._   _,'\/
-#          ,\.-'      _.-._      `-./.
-#        ,'        _,' ___ `._        `.
-#        | :.    ,'_,-' . `-._`-.   .: |
-#        | ':.  '-'     |     `-'  .:' |
-#        :  ':.         |         .:'  ;
-#         \  ,-         |         -.  /
-#          \'    \      '      /    `/
-#           \    ,`   ,'^`.   '.    /
-#            \  ( O`-','-'.`-'O )  /
-#             `-.___,'     `.___.-'
+# python3 install easy_install(s)
+node['python']['python3']['easy_installs'].each do |easy_install|
+  bash "python3_easy_install_#{easy_install}" do
+    code "#{node['python']['python3']['easy_install_bin']} #{easy_install}"
+  end
+end unless node['python']['python3']['easy_installs'].empty?
+
+# python3 upgrade tools
+bash 'python3_upgrade_tools' do
+  code "#{node['python']['python3']['bin']} -m pip install --upgrade pip setuptools wheel"
+end
+
+# python3 create symlink(s)
+node['python']['python3']['symlinks'].each do |target,link|
+  link "python3_symlink_#{target}_to_#{link}" do
+    target_file target
+    to link
+  end
+end unless node['python']['python3']['symlinks'].empty?
+
+# install pips
+bash "pyhton3_install_pips" do
+  code "#{node['python']['python3']['bin']} -m pip install #{node['python']['python3']['pips'].join(' ')}"
+end unless node['python']['python3']['pips'].empty?
