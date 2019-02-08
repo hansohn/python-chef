@@ -8,13 +8,29 @@ This cookbook installs [Python](https://www.python.org/) a object-oriented, inte
 
 This cookbook utilizes the [yum-ius](https://supermarket.chef.io/cookbooks/yum-ius) cookbook to setup both the [EPEL](https://fedoraproject.org/wiki/EPEL) and [IUS](https://ius.io/) yum repos. Depending on your package requirements you may or may not need to include this cookbook in your recipe.
 
-### Configuration
+### Usage
+
+#### Step 1: Berksfile
+
+Update berksfile to include the cookbook from github
+
+```ruby
+# add cookbook from github
+cookbook "python-chef", "~> 0.1.0", git: "https://github.com/hansohn/python-chef.git"
+```
+
+#### Step 2: Metadata.rb
+
+Update metadata.rb to include cookbook dependency
+
+```ruby
+# include cookbook dependency
+depends 'python-chef'
+```
+
+#### Step 3: Include Cookbook
 
 This cookbook contains `python2`, `python3`, and `virtualenv` recipes which function independently of each other. Include only the ones you need.
-
-#### Recipes
-
-Include the desired recipe(s):
 
 ```ruby
 # include python2 recipe
@@ -27,9 +43,9 @@ include_recipe "python-chef::python3"
 include_recipe "python-chef::virtualenv"
 ```
 
-#### Attributes
+#### Step 4: Define Attributes
 
-Define the corresponding attributes:
+Define the python packages, pips, and virtualenvs that you would like this recipe to install.
 
 ##### Python2
 
