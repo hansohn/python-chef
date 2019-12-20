@@ -8,15 +8,15 @@
 control 'python-chef::python3' do
   title 'Testing python3 installation'
 
-  describe package('python36u-devel') do
+  describe package('python3-devel') do
     it { should be_installed }
   end
 
-  describe package('python36u-pip') do
+  describe package('python3-pip') do
     it { should be_installed }
   end
 
-  describe package('python36u-setuptools') do
+  describe package('python3-setuptools') do
     it { should be_installed }
   end
 
