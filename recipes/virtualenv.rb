@@ -1,9 +1,9 @@
-# Cookbook Name:: jupyterhub-chef
+# Cookbook:: jupyterhub-chef
 # Recipe:: virtualenv
 #
 # The MIT License
 #
-# Copyright (c) 2019 Ryan Hansohn
+# Copyright:: 2019, Ryan Hansohn
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,22 +29,22 @@ bash 'python_pip_install_virtualenv' do
 end unless node['python']['virtualenvs'].empty?
 
 # create virtualenv(s)
-node['python']['virtualenvs'].each do |name, params|
-  directory "virtualenv_#{name}_#{params['dest_dir']}" do
-    path params['dest_dir']
+node['python']['virtualenvs'].each do |name, config|
+  directory "virtualenv_#{name}_#{config['dest_dir']}" do
+    path config['dest_dir']
     recursive true
     action :create
   end
 
   bash "virtualenv_create_#{name}" do
     code <<-EOH
-        if [ ! -d #{params['dest_dir']}/#{name}/bin ]; then
-          virtualenv -p #{params['python']} #{params['dest_dir']}/#{name}
+        if [ ! -d #{config['dest_dir']}/#{name}/bin ]; then
+          virtualenv -p #{config['python']} #{config['dest_dir']}/#{name}
         fi
-        source #{params['dest_dir']}/#{name}/bin/activate
-        python -m pip install #{params['pips'].join(' ')}
+        source #{config['dest_dir']}/#{name}/bin/activate
+        python -m pip install #{config['pips'].join(' ')}
         deactivate
       EOH
-    only_if { File.exist?(params['python']) }
+    only_if { File.exist?(config['python']) }
   end
 end
