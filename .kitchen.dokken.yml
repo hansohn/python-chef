@@ -32,7 +32,7 @@ suites:
     driver:
       hostname: python
     run_list:
-      - recipe[yum-ius]
+      - recipe[yum-epel]
       - recipe[python-chef::python2]
       - recipe[python-chef::python3]
       - recipe[python-chef::virtualenv]

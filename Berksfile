@@ -2,4 +2,4 @@ source 'https://supermarket.chef.io'
 
 metadata
 
-cookbook 'yum-ius'
+cookbook 'yum-epel'

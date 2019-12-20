@@ -15,7 +15,7 @@ verifier:
   name: inspec
 
 platforms:
-  - name: centos-7.6
+  - name: centos-7
 
 suites:
   - name: default
@@ -27,7 +27,7 @@ suites:
         natdnshostresolver1: "on"
       network:
     run_list:
-      - recipe[yum-ius]
+      - recipe[yum-epel]
       - recipe[python-chef::python2]
       - recipe[python-chef::python3]
       - recipe[python-chef::virtualenv]
