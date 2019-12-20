@@ -1,10 +1,10 @@
 #
-# Cookbook Name:: jupyterhub-chef
+# Cookbook:: jupyterhub-chef
 # Recipe:: python2
 #
 # The MIT License
 #
-# Copyright (c) 2019 Ryan Hansohn
+# Copyright:: 2019, Ryan Hansohn
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -30,11 +30,13 @@ package 'python2_install_packages' do
 end
 
 # python2 install easy_install(s)
-node['python']['python2']['easy_installs'].each do |easy_install|
-  bash "python2_easy_install_#{easy_install}" do
-    code "#{node['python']['python2']['easy_install_bin']} #{easy_install}"
-  end
-end unless node['python']['python2']['easy_installs'].empty?
+if node['python']['python2'].attribute?('easy_installs')
+  node['python']['python2']['easy_installs'].each do |easy_install|
+    bash "python2_easy_install_#{easy_install}" do
+      code "#{node['python']['python2']['easy_install_bin']} #{easy_install}"
+    end
+  end unless node['python']['python2']['easy_installs'].empty?
+end
 
 # python2 upgrade tools
 bash 'python2_upgrade_tools' do
@@ -42,14 +44,18 @@ bash 'python2_upgrade_tools' do
 end
 
 # python2 create symlink(s)
-node['python']['python2']['symlinks'].each do |target, link|
-  link "python2_symlink_#{target}_to_#{link}" do
-    target_file target
-    to link
-  end
-end unless node['python']['python2']['symlinks'].empty?
+if node['python']['python2'].attribute?('symlinks')
+  node['python']['python2']['symlinks'].each do |target, link|
+    link "python2_symlink_#{target}_to_#{link}" do
+      target_file target
+      to link
+    end
+  end unless node['python']['python2']['symlinks'].empty?
+end
 
 # install pips
-bash 'pyhton3_install_pips' do
-  code "#{node['python']['python2']['bin']} -m pip install #{node['python']['python2']['pips'].join(' ')}"
-end unless node['python']['python2']['pips'].empty?
+if node['python']['python2'].attribute?('pips')
+  bash 'pyhton3_install_pips' do
+    code "#{node['python']['python2']['bin']} -m pip install #{node['python']['python2']['pips'].join(' ')}"
+  end unless node['python']['python2']['pips'].empty?
+end
