@@ -38,9 +38,9 @@ if node['python']['python2'].attribute?('easy_installs')
   end unless node['python']['python2']['easy_installs'].empty?
 end
 
-# python2 upgrade tools
-bash 'python2_upgrade_tools' do
-  code "#{node['python']['python2']['bin']} -m pip install --upgrade pip setuptools wheel"
+# python2 install tools
+bash 'python2_install_tools' do
+  code "#{node['python']['python2']['bin']} -m pip install wheel"
 end
 
 # python2 create symlink(s)
