@@ -7,6 +7,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - no new features in development at this time
 
+## [0.2.2](https://github.com/hansohn/python-chef/compare/0.2.1...0.2.2) (Dec 20, 2019)
+
+BUG FIXES:
+
+- restore support tool updates
+
 ## [0.2.1](https://github.com/hansohn/python-chef/compare/0.2.0...0.2.1) (Dec 20, 2019)
 
 BUG FIXES:
